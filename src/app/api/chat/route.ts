@@ -13,7 +13,7 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
 
 // Model provider mapping
 const MODEL_PROVIDERS = {
@@ -75,13 +75,14 @@ export async function POST(req: NextRequest) {
         break;
 
       case 'anthropic':
-        const anthropicMessage = await anthropic.messages.create({
+        // Using Anthropic's completion API instead of messages API
+        const anthropicCompletion = await anthropic.completions.create({
           model: model,
-          system: "You are StarTalk, an AI assistant for AlienNova.com. You are helpful, creative, and knowledgeable. Respond in a friendly and conversational manner.",
-          messages: [{ role: "user", content: message }],
-          max_tokens: 1000,
+          prompt: `\n\nHuman: ${message}\n\nAssistant:`,
+          max_tokens_to_sample: 1000,
+          stop_sequences: ["\n\nHuman:"],
         });
-        reply = anthropicMessage.content[0].text;
+        reply = anthropicCompletion.completion;
         break;
 
       case 'google':

@@ -1,15 +1,18 @@
+"use client";
+
 import { useState } from 'react';
 import TemplateForm from '@/components/write/TemplateForm';
 import ContentDisplay from '@/components/write/ContentDisplay';
+import Header from '@/components/Header';
 
 export default function WritePage() {
-  const [generatedContent, setGeneratedContent] = useState('');
+  const [generatedContent, setGeneratedContent] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [currentModel, setCurrentModel] = useState('gpt-4o');
-  
-  const handleGenerate = async (prompt: string, model: string) => {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleGenerate = async (template: string, prompt: string, model: string) => {
     setIsGenerating(true);
-    setCurrentModel(model);
+    setError(null);
     
     try {
       const response = await fetch('/api/write', {
@@ -17,38 +20,36 @@ export default function WritePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          prompt,
-          model,
-        }),
+        body: JSON.stringify({ template, prompt, model }),
       });
       
-      const data = await response.json();
-      
-      if (response.ok) {
-        setGeneratedContent(data.content);
-      } else {
-        setGeneratedContent(`Error: ${data.error || 'Failed to generate content'}`);
+      if (!response.ok) {
+        throw new Error('Failed to generate content');
       }
-    } catch (error) {
-      console.error('Failed to generate content:', error);
-      setGeneratedContent('Sorry, there was an error processing your request. Please try again.');
+      
+      const data = await response.json();
+      setGeneratedContent(data.content);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsGenerating(false);
     }
   };
-  
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-blue-900 dark:text-blue-100 mb-8">NebulaWrite AI Writing</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="container mx-auto px-4 py-8">
+      <Header />
+      <h1 className="text-3xl font-bold mb-8 text-center">NebulaWrite AI Writing Assistant</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
           <TemplateForm onGenerate={handleGenerate} isGenerating={isGenerating} />
+        </div>
+        <div>
           <ContentDisplay 
             content={generatedContent} 
-            isLoading={isGenerating} 
-            model={currentModel}
+            isGenerating={isGenerating}
+            error={error}
           />
         </div>
       </div>

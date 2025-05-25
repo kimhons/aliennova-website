@@ -9,7 +9,7 @@ export interface ImageStyle {
   defaultModel: string;
 }
 
-export const IMAGE_STYLES: ImageStyle[] = [
+export const imageStyles: ImageStyle[] = [
   {
     id: 'realistic',
     name: 'Photorealistic',
@@ -82,5 +82,5 @@ export const IMAGE_MODELS = [
 ];
 
 export function getStyleById(id: string): ImageStyle {
-  return IMAGE_STYLES.find(style => style.id === id) || IMAGE_STYLES[0];
+  return imageStyles.find(style => style.id === id) || imageStyles[0];
 }

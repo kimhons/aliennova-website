@@ -13,7 +13,7 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
 
 // Model provider mapping
 const MODEL_PROVIDERS = {
@@ -75,13 +75,14 @@ export async function POST(req: NextRequest) {
         break;
 
       case 'anthropic':
-        const anthropicMessage = await anthropic.messages.create({
+        // Using Anthropic's completion API instead of messages API
+        const anthropicCompletion = await anthropic.completions.create({
           model: model,
-          system: "You are NebulaWrite, an AI writing assistant for AlienNova.com. You excel at creating high-quality written content based on user prompts. Your writing is engaging, well-structured, and tailored to the specified audience and purpose.",
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 2000,
+          prompt: `\n\nHuman: ${prompt}\n\nAssistant:`,
+          max_tokens_to_sample: 2000,
+          stop_sequences: ["\n\nHuman:"],
         });
-        content = anthropicMessage.content[0].text;
+        content = anthropicCompletion.completion;
         break;
 
       case 'google':

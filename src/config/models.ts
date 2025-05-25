@@ -11,7 +11,7 @@ export interface AIModel {
   apiEnvVar: string;
 }
 
-export const AI_MODELS: AIModel[] = [
+export const models: AIModel[] = [
   // OpenAI Models
   {
     id: 'gpt-4o',
@@ -86,9 +86,9 @@ export const AI_MODELS: AIModel[] = [
 ];
 
 export function getModelById(id: string): AIModel {
-  return AI_MODELS.find(model => model.id === id) || AI_MODELS[0];
+  return models.find(model => model.id === id) || models[0];
 }
 
 export function getModelsByProvider(provider: string): AIModel[] {
-  return AI_MODELS.filter(model => model.provider === provider);
+  return models.filter(model => model.provider === provider);
 }

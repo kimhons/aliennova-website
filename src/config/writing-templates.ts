@@ -10,7 +10,7 @@ export interface WritingTemplate {
   defaultModel: string;
 }
 
-export const WRITING_TEMPLATES: WritingTemplate[] = [
+export const writingTemplates: WritingTemplate[] = [
   {
     id: 'blog-post',
     name: 'Blog Post',
@@ -68,5 +68,5 @@ export const WRITING_TEMPLATES: WritingTemplate[] = [
 ];
 
 export function getTemplateById(id: string): WritingTemplate {
-  return WRITING_TEMPLATES.find(template => template.id === id) || WRITING_TEMPLATES[0];
+  return writingTemplates.find(template => template.id === id) || writingTemplates[0];
 }

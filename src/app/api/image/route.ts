@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         response_format: "url",
       });
 
-      imageUrl = response.data[0].url || '';
+      imageUrl = response.data?.[0]?.url || '';
     } 
     else if (model === 'flux-dev' || model === 'ideogram-v3-turbo') {
       // For Replicate models, we'd implement the API call here

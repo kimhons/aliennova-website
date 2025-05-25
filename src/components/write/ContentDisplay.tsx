@@ -1,12 +1,15 @@
+"use client";
+
 import { useState } from 'react';
 
 interface ContentDisplayProps {
   content: string;
-  isLoading: boolean;
-  model: string;
+  isGenerating: boolean;
+  error: string | null;
+  model?: string;
 }
 
-export default function ContentDisplay({ content, isLoading, model }: ContentDisplayProps) {
+export default function ContentDisplay({ content, isGenerating, error, model }: ContentDisplayProps) {
   const [copied, setCopied] = useState(false);
   
   const handleCopy = async () => {
@@ -19,7 +22,7 @@ export default function ContentDisplay({ content, isLoading, model }: ContentDis
     }
   };
   
-  if (isLoading) {
+  if (isGenerating) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 min-h-[400px] flex items-center justify-center">
         <div className="text-center">
@@ -47,7 +50,7 @@ export default function ContentDisplay({ content, isLoading, model }: ContentDis
         <div>
           <h2 className="text-xl font-semibold text-blue-900 dark:text-blue-100">Generated Content</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Generated with {model.split('-')[0]} model
+            Generated with {model ? model.split('-')[0] : 'AI'} model
           </p>
         </div>
         <button
