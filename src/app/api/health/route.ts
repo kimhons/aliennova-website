@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
 
+// Use dynamic import for auth to prevent build-time execution
 export async function GET(req: NextRequest) {
+  // Import auth dynamically to prevent execution during build time
+  const { auth } = await import('@clerk/nextjs');
   try {
     const { userId } = auth();
     

@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
 import OpenAI from 'openai';
-
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 export async function POST(req: NextRequest) {
   try {
+    // Import auth dynamically to prevent execution during build time
+    const { auth } = await import('@clerk/nextjs');
     const { userId } = auth();
     
     // Optional: Check authentication
@@ -30,6 +26,11 @@ export async function POST(req: NextRequest) {
 
     let imageUrl = '';
 
+    // Initialize OpenAI client inside the handler to prevent execution during build
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
+    });
+    
     // Route to appropriate API based on model
     if (model === 'dall-e-3') {
       // Use OpenAI's DALL-E 3
