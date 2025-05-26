@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { auth } from '@clerk/nextjs';
+=======
+>>>>>>> 47466733799704ed0ae99d489109aee21bbcbd91
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+<<<<<<< HEAD
 // Initialize API clients
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,6 +19,8 @@ const anthropic = new Anthropic({
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
 
+=======
+>>>>>>> 47466733799704ed0ae99d489109aee21bbcbd91
 // Model provider mapping
 const MODEL_PROVIDERS = {
   'gpt': 'openai',
@@ -27,6 +33,11 @@ const MODEL_PROVIDERS = {
 
 export async function POST(req: NextRequest) {
   try {
+<<<<<<< HEAD
+=======
+    // Import auth dynamically to prevent execution during build time
+    const { auth } = await import('@clerk/nextjs');
+>>>>>>> 47466733799704ed0ae99d489109aee21bbcbd91
     const { userId } = auth();
     
     // Optional: Check authentication
@@ -53,6 +64,20 @@ export async function POST(req: NextRequest) {
 
     let content = '';
 
+<<<<<<< HEAD
+=======
+    // Initialize API clients inside the handler to prevent execution during build
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
+    });
+
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY || '',
+    });
+
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
+
+>>>>>>> 47466733799704ed0ae99d489109aee21bbcbd91
     // Route to appropriate API based on provider
     switch (provider) {
       case 'openai':

@@ -14,6 +14,7 @@ export default authMiddleware({
     "/api/summarizer",
     "/api/finance",
     "/api/voice",
+    "/api/email-scheduler",
     "/learn", 
     "/sign-in", 
     "/sign-up",
