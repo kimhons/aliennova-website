@@ -1,4 +1,4 @@
-import { SignIn } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function SignInPage() {
   return (
@@ -6,14 +6,22 @@ export default function SignInPage() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-blue-900">Welcome to AlienNova</h1>
-          <p className="mt-2 text-gray-600">Sign in to access all AI tools</p>
+          <p className="mt-2 text-gray-600">Demo Version - No Sign In Required</p>
         </div>
-        <SignIn appearance={{
-          elements: {
-            formButtonPrimary: 'bg-blue-900 hover:bg-blue-800',
-            footerActionLink: 'text-blue-900 hover:text-blue-800'
-          }
-        }} />
+        <div className="mt-8 space-y-6">
+          <div className="bg-green-100 text-green-800 p-4 rounded-md text-center">
+            <p className="font-medium">Demo Mode Active</p>
+            <p className="text-sm mt-2">This is a demo version with all features available without authentication</p>
+          </div>
+          <div className="flex flex-col space-y-4">
+            <Link href="/" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-900 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Return to Home
+            </Link>
+            <Link href="/chat" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+              Try StarTalk AI
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

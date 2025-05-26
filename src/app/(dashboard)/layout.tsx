@@ -1,5 +1,3 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 
 export default function DashboardLayout({
@@ -7,12 +5,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = auth();
-  
-  if (!userId) {
-    redirect("/sign-in");
-  }
-  
+  // Authentication removed for demo version
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
